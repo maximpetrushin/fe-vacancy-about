@@ -4,14 +4,16 @@ import {useState} from "react";
 import {setSearch} from "../store/vacancySlice.ts";
 import {MagnifyingGlassIcon} from '@phosphor-icons/react'
 import useVacancyQueryParams from "../hooks/useVacancyQueryParams.ts";
+import {useSearchParams} from "react-router";
 
 
 function SearchField() {
 
     const updateQueryParam = useVacancyQueryParams()
 
+    const [searchParams] = useSearchParams()
 
-    const [fieldState, setFieldState] = useState<string>('');
+    const [fieldState, setFieldState] = useState(searchParams.get("search") ?? '');
 
     const dispatch = useAppDispatch();
 
