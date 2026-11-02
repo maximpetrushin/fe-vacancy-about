@@ -10,6 +10,7 @@ function SearchField() {
 
     const updateQueryParam = useVacancyQueryParams()
 
+
     const [fieldState, setFieldState] = useState<string>('');
 
     const dispatch = useAppDispatch();
