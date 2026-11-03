@@ -1,76 +1,111 @@
-import {Container, Divider, Grid, Stack} from "@mantine/core";
+import { Container, Divider, Grid, Stack, Tabs } from "@mantine/core";
 import SearchField from "../components/SearchField.tsx";
 import SkillList from "../components/SkillList.tsx";
-import CityList from "../components/CityList.tsx";
-import VacancyList from "../components/VacancyList.tsx";
-import {useEffect, useRef} from "react";
-import {useAppDispatch, useAppSelector} from "../store/hooks.ts";
-import { useSearchParams } from "react-router";
-import { fetchVacancy, getFiltersFromUrl, setFilters } from "../store/vacancySlice.ts";
+import { useEffect, useRef } from "react";
+import { useAppDispatch, useAppSelector } from "../store/hooks.ts";
+import { useLocation, useNavigate, useSearchParams } from "react-router";
+import {
+  fetchVacancy,
+  getFiltersFromUrl,
+  setFilters,
+  setCity,
+} from "../store/vacancySlice.ts";
+import { Outlet } from "react-router";
 
+function Vacancies() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isInitial = useRef(false);
 
-function Vacancies () {
+  const filters = useAppSelector((state) => state.vacancy.filters);
+  const dispatch = useAppDispatch();
 
-    const [searchParams, setSearchParams] = useSearchParams();
-    const isInitial = useRef(false);
-    const isFirstFiltersEffect = useRef(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const activeTab = location.pathname.split("/")[2] ?? null;
+  const pathSplit = location.pathname.split("/");
+  const cityFromPath =
+    pathSplit[2] === "moscow" || pathSplit[2] === "petersburg"
+      ? pathSplit[2]
+      : null;
+  const city =
+    cityFromPath === "moscow"
+      ? "Москва"
+      : cityFromPath === "petersburg"
+        ? "Санкт-Петербург"
+        : "";
 
-    const filters = useAppSelector(state => state.vacancy.filters);
-    const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (isInitial.current) return;
+    const urlFilters = getFiltersFromUrl(searchParams);
+    urlFilters.city = city;
 
-    useEffect(() => {
-        if (isInitial.current) return;
-        const urlFilters = getFiltersFromUrl(searchParams);
+    dispatch(setFilters(urlFilters));
+    // dispatch(fetchVacancy(urlFilters));
 
-        dispatch(setFilters(urlFilters));
-        dispatch(fetchVacancy(urlFilters));
+    const params = new URLSearchParams();
 
-        const params = new URLSearchParams();
+    params.set("skills", urlFilters.skills.join(","));
 
+    if (urlFilters.search) params.set("search", urlFilters.search);
+    if (urlFilters.page !== 1) params.set("page", String(urlFilters.page));
+    if (params.toString() !== searchParams.toString()) {
+      setSearchParams(params, { replace: true });
+    }
+    isInitial.current = true;
+  }, [searchParams, setSearchParams, dispatch]);
 
-        params.set('skills', urlFilters.skills.join(','))
+  useEffect(() => {
+    if (filters.city !== city) {
+      return;
+    }
+    console.log("Второй useEffect:", filters);
+    dispatch(fetchVacancy(filters));
+  }, [filters, dispatch, city]);
 
-        if (urlFilters.search) params.set('search', urlFilters.search);
-        if (urlFilters.city) params.set('city', urlFilters.city);
-        if (urlFilters.page !== 1) params.set('page', String(urlFilters.page));
-        if (params.toString() !== searchParams.toString()) {
-            setSearchParams(params, {replace: true});
-        }
-        isInitial.current = true;
-    }, [searchParams, setSearchParams, dispatch]);
+  useEffect(() => {
+    if (filters.city === city) return;
 
+    dispatch(setCity(city));
+  }, [city, filters.city, dispatch]);
 
+  console.log(cityFromPath);
+  console.log(city);
 
-    useEffect(() => {
-        if (isFirstFiltersEffect.current) {
-            isFirstFiltersEffect.current = false;
-            return;
-        }
-
-        dispatch(fetchVacancy(filters));
-    }, [filters, dispatch]);
-
-    return (
-        <>
-            <Container size={1000}>
-                <SearchField />
-            </Container>
-            <Divider my='xs' opacity='0.7' m={0} mb={24}/>
-            <Container size={1000} pb={85}>
-                <Grid >
-                    <Grid.Col span={4}>
-                        <Stack>
-                            <SkillList />
-                            <CityList />
-                        </Stack>
-                    </Grid.Col>
-                    <Grid.Col span={8}>
-                        <VacancyList />
-                    </Grid.Col>
-                </Grid>
-            </Container>
-        </>
-    )
+  return (
+    <>
+      <Container size={1000}>
+        <SearchField />
+      </Container>
+      <Divider my="xs" opacity="0.7" m={0} mb={24} />
+      <Container size={1000} pb={85}>
+        <Tabs
+          allowTabDeactivation
+          value={activeTab}
+          onChange={(value) => {
+            const query = searchParams.toString();
+            navigate(
+              value ? `/vacancies/${value}?${query}` : `/vacancies?${query}`,
+            );
+          }}
+        >
+          <Tabs.List justify="center" m={24} bottom="none">
+            <Tabs.Tab value="moscow">Москва</Tabs.Tab>
+            <Tabs.Tab value="petersburg">Санкт-Петербург</Tabs.Tab>
+          </Tabs.List>
+        </Tabs>
+        <Grid>
+          <Grid.Col span={4}>
+            <Stack>
+              <SkillList />
+            </Stack>
+          </Grid.Col>
+          <Grid.Col span={8}>
+            <Outlet />
+          </Grid.Col>
+        </Grid>
+      </Container>
+    </>
+  );
 }
 
-export default Vacancies
+export default Vacancies;
