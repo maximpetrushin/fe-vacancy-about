@@ -1,5 +1,5 @@
-Практическая задача 4.2.3 Проверяемое задание «Сайт вакансий»
+Проверяемое задание «Вложенные роуты и обработка ошибок»
 
 Студент Петрушин Максим
 
-https://fe-vacancy-router.vercel.app/vacancies
+https://fe-vacancy-city-routes.vercel.app/vacancies
