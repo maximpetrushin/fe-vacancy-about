@@ -1,4 +1,4 @@
-import { Container, Divider, Grid, Stack, Tabs } from "@mantine/core";
+import { Container, Divider, Flex, Grid, Stack, Tabs } from "@mantine/core";
 import SearchField from "../components/SearchField.tsx";
 import SkillList from "../components/SkillList.tsx";
 import { useEffect, useRef } from "react";
@@ -78,21 +78,24 @@ function Vacancies() {
       </Container>
       <Divider my="xs" opacity="0.7" m={0} mb={24} />
       <Container size={1000} pb={85}>
-        <Tabs
-          allowTabDeactivation
-          value={activeTab}
-          onChange={(value) => {
-            const query = searchParams.toString();
-            navigate(
-              value ? `/vacancies/${value}?${query}` : `/vacancies?${query}`,
-            );
-          }}
-        >
-          <Tabs.List justify="center" m={24} bottom="none">
-            <Tabs.Tab value="moscow">Москва</Tabs.Tab>
-            <Tabs.Tab value="petersburg">Санкт-Петербург</Tabs.Tab>
-          </Tabs.List>
-        </Tabs>
+        <Flex justify="center">
+          <Tabs
+            allowTabDeactivation
+            value={activeTab}
+            w="fit-content"
+            onChange={(value) => {
+              const query = searchParams.toString();
+              navigate(
+                value ? `/vacancies/${value}?${query}` : `/vacancies?${query}`,
+              );
+            }}
+          >
+            <Tabs.List justify="center" m={24}>
+              <Tabs.Tab value="moscow">Москва</Tabs.Tab>
+              <Tabs.Tab value="petersburg">Санкт-Петербург</Tabs.Tab>
+            </Tabs.List>
+          </Tabs>
+        </Flex>
         <Grid>
           <Grid.Col span={4}>
             <Stack>
