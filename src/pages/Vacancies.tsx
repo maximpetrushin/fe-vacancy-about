@@ -40,7 +40,6 @@ function Vacancies() {
     urlFilters.city = city;
 
     dispatch(setFilters(urlFilters));
-    // dispatch(fetchVacancy(urlFilters));
 
     const params = new URLSearchParams();
 
@@ -82,7 +81,7 @@ function Vacancies() {
           <Tabs
             allowTabDeactivation
             value={activeTab}
-            w="fit-content"
+            // w="fit-content"
             onChange={(value) => {
               const query = searchParams.toString();
               navigate(
@@ -96,6 +95,7 @@ function Vacancies() {
             </Tabs.List>
           </Tabs>
         </Flex>
+
         <Grid>
           <Grid.Col span={4}>
             <Stack>
