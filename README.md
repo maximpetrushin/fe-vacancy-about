@@ -1,5 +1,5 @@
-Проверяемое задание «Вложенные роуты и обработка ошибок»
+Проверяемое задание «Добавление роута, Layout, Link и useMatch»
 
 Студент Петрушин Максим
 
-https://fe-vacancy-city-routes.vercel.app/vacancies
+https://fe-vacancy-about.vercel.app/vacancies

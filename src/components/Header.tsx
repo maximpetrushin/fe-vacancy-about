@@ -1,9 +1,15 @@
-import {Grid, Text, Badge, NavLink, Group, Image, Paper} from "@mantine/core";
-import {UserCircleIcon} from "@phosphor-icons/react"
+import {Grid, Text, NavLink, Group, Image, Paper, Badge} from "@mantine/core";
+import { UserCircleIcon} from "@phosphor-icons/react"
+import {Link, useMatch} from 'react-router'
 
 import MainLogo from "../assets/MainLogo.png";
 
 function Header() {
+
+    const isAbout = useMatch('/about')
+    const isVacancies = useMatch("/vacancies/*");
+
+
     return (
         <Paper shadow='sm' radius={0}>
             <Grid align="center" columns={3} px={20}>
@@ -27,23 +33,50 @@ function Header() {
                         wrap="nowrap"
                     >
                         <NavLink
+                            component={Link}
+                            to='/vacancies'
+                            opacity={isAbout ? '0.5' : '1'}
+                            onClick={(event) => {
+                                if (isVacancies) {
+                                    event.preventDefault();
+                                }
+                            }}
                             w="max-content"
                             label="Вакансии FE"
                             rightSection={
-                                <Badge
-                                    w={6}
-                                    h={6}
-                                    circle
-                                    bg="primary"
-                                />
+                                isVacancies && (
+                                    <Badge
+                                        w={6}
+                                        h={6}
+                                        circle
+                                        bg="primary"
+                                    />
+                                )
                             }
                         />
 
                         <NavLink
+                            component={Link}
+                            to='/about'
+                            opacity={isVacancies ? '0.5' : '1'}
+                            onClick={(event) => {
+                                if (isAbout) {
+                                    event.preventDefault();
+                                }
+                            }}
                             w="max-content"
                             label="Обо мне"
-                            disabled
                             leftSection={<UserCircleIcon/>}
+                            rightSection={
+                                isAbout && (
+                                    <Badge
+                                        w={6}
+                                        h={6}
+                                        circle
+                                        bg="primary"
+                                    />
+                                )
+                            }
                         />
                     </Group>
                 </Grid.Col>

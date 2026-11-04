@@ -4,11 +4,13 @@ import Vacancies from "./pages/Vacancies.tsx";
 import VacancyDetails from "./pages/VacancyDetails.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import VacancyList from "./components/VacancyList.tsx";
+import About from "./pages/About.tsx";
 
 function App() {
   return (
     <Routes>
       <Route element={<AppLayout />}>
+        <Route path='about' element={<About />} />
         <Route path="vacancies" element={<Vacancies />}>
           <Route index element={<VacancyList />} />
           <Route path="moscow" element={<VacancyList />} />

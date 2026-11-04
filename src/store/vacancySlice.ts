@@ -86,7 +86,6 @@ export const fetchVacancy = createAsyncThunk<
   FetchVacancyParams,
   { rejectValue: string }
 >("vacancy/fetchVacancy", async function (params, { rejectWithValue }) {
-  console.log("Запрос вакансий с фильтрами:", params);
   const url = `https://kata-jobs.onrender.com/api/jobs${buildQueryParam(params)}`;
 
   try {

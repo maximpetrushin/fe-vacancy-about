@@ -57,7 +57,6 @@ function Vacancies() {
     if (filters.city !== city) {
       return;
     }
-    console.log("Второй useEffect:", filters);
     dispatch(fetchVacancy(filters));
   }, [filters, dispatch, city]);
 
@@ -67,8 +66,6 @@ function Vacancies() {
     dispatch(setCity(city));
   }, [city, filters.city, dispatch]);
 
-  console.log(cityFromPath);
-  console.log(city);
 
   return (
     <>
