@@ -1,4 +1,4 @@
-import {Flex, Paper, Title, Text, Stack, Pill} from "@mantine/core";
+import {Flex, Paper, Title, Text, Stack, Pill, Image} from "@mantine/core";
 
 const myStack = ['React', 'Javascript', 'TypeScript', 'Redux Toolkit', 'React Router', 'Bootstrap', 'Mantine UI', 'SCSS Module', 'REST API', 'HTML/CSS', 'BEM', 'Vite', 'Webpack'];
 
@@ -14,7 +14,7 @@ const pillColors = [
 
 function About() {
     return (
-        <Flex direction='column' gap={16} mx='auto' m={24} maw={700}>
+        <Flex direction='column' gap={16} mx='auto' m={24} maw={700} pb={30}>
             <Paper p={24}>
                 <Stack gap={12}>
                     <Title order={2}>Максим Петрушин</Title>
@@ -46,6 +46,10 @@ function About() {
                         <Text>
                             Сейчас продолжаю развивать навыки Frontend-разработки и расширять практический опыт на собственных проектах.
                         </Text>
+                        <Text>
+                            И на последок посмотрите на моих любимых питомцев, классные правда?)
+                        </Text>
+                        <Image src='/pets.heic' radius='md'/>
                     </Stack>
                 </Stack>
             </Paper>
